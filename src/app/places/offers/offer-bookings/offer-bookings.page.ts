@@ -11,13 +11,16 @@ import { PlacesService } from '../../places.service';
 })
 export class OfferBookingsPage implements OnInit {
 
-  place: Place;
+  private place: Place;
+  private placeId: string;
 
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private placesService: PlacesService
-  ) {}
+  ) {
+    
+  }
 
    ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -25,8 +28,8 @@ export class OfferBookingsPage implements OnInit {
         this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get('placeId'));
+      this.placeId = paramMap.get('placeId');
+      this.place = this.placesService.getPlace(this.placeId);
     });
   }
-
 }
