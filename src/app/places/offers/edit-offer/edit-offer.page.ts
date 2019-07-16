@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PlacesService } from '../../places.service';
 import { NavController } from '@ionic/angular';
 import { Place } from '../../place.model';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-offer',
@@ -13,8 +14,13 @@ export class EditOfferPage implements OnInit {
 
   private place: Place;
   private placeId: string;
+  private form: FormGroup;
   
-  constructor(private route: ActivatedRoute, private navCtrl: NavController, private placesService: PlacesService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private navCtrl: NavController, 
+    private placesService: PlacesService
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -23,9 +29,25 @@ export class EditOfferPage implements OnInit {
         return;
       }
       this.placeId = paramMap.get('placeId');
-      console.log(this.placeId);
       this.place = this.placesService.getPlace(this.placeId);
+
+      this.form = new FormGroup({
+        title: new FormControl(this.place.title, {
+          updateOn: 'blur',
+          validators: [Validators.required],
+        }),
+        description: new FormControl(this.place.description, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.maxLength(180)] 
+        }),
+      });
     });
   }
 
+  onUpdateOffer() {
+    if(!this.form.valid) {
+      return ;
+    }
+    console.log(this.form);
+  }
 }
