@@ -13,9 +13,10 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class DiscoverPage implements OnInit, OnDestroy {
 
-  loadedPlaces: Place[];
-  listedLoadedPlaces: Place[];
-  relevantPlaces: Place[];
+  private loadedPlaces: Place[];
+  private listedLoadedPlaces: Place[];
+  private relevantPlaces: Place[];
+  private isLoading: boolean = false;
   private placesSub: Subscription;
   private chosenFilter = 'all';
   
@@ -38,6 +39,13 @@ export class DiscoverPage implements OnInit, OnDestroy {
         this.listedLoadedPlaces = this.relevantPlaces.slice(1);
       }
     })
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   ngOnDestroy() {

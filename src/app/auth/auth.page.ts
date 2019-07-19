@@ -11,8 +11,8 @@ import { NgForm } from '@angular/forms';
 })
 export class AuthPage implements OnInit {
 
-  isLoading: boolean = false;
-  isLogin: boolean = true;
+  private isLoading: boolean = false;
+  private isLogin: boolean = true;
 
   constructor(
     private authService: AuthService, 
